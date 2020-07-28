@@ -90,7 +90,58 @@
       <form><input type="text"/></form>
       <button>I'm feeling Lonely!</button>
     </div>
-    <script>
+
+
+
+    <script> //JS <script> tag code - Feeling Lonely
+ // getting the date
+function dateFormat() {
+            // current date
+            let d = new Date();
+            let hour = d.getHours();
+            let min = d.getMinutes();
+            let sec = d.getSeconds();
+            return hour + ':' + min + ":" + sec
+        }
+
+        // removing message from the box
+        function removeMessage(id) {
+            document.getElementById(id).remove();
+        }
+        let id = 3;
+        // getting the joke from the endpoint by using FETCH API to get data
+        function getJoke() {
+            fetch("http://api.icndb.com/jokes/random")
+                .then(res => res.json())
+                .then(data => {
+                let joke = data["value"]["joke"];
+                document.getElementById("chatbox").innerHTML += ` <div  class="message" id="` + id + `">
+                <span>` + dateFormat() + `</span>
+                <span class="sender">Fact:</span>
+                <span id="demo">` + joke + `</span>
+                <span onclick="removeMesage(this.parentNode.id)" class="delete">❌</span>
+                </div>`;
+                id++;
+                })
+                .catch(error => console.error(error)) 
+        }
+        // checking when enter is pressed
+        let input = document.getElementById("c_user");
+        input.addEventListener("keyup", function(event) {
+            // check if the key is enter and the text box value is not empty
+            if (event.keyCode === 13 && input.value != "") {
+                document.getElementById("chatbox").innerHTML += ` <div  class="message" id="` + id + `">
+                <span>` + dateFormat() + `</span>
+                <span class="sender">I:</span>
+                <span id="demo">` + input.value + `</span>
+                <span onclick="removeMesage(this.parentNode.id)" class="delete">❌</span>
+            </div>`;
+                id++;
+                input.value = "";
+                event.preventDefault();
+            }
+        });
+
     </script>
   </body>
 </html>
